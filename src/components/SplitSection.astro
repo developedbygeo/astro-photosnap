@@ -1,0 +1,58 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image, type LocalImageProps } from "astro:assets";
+
+export interface Props {
+  title: string;
+  description: string;
+  layout: "image-left" | "image-right";
+  link: {
+    href: string;
+    title: string;
+  };
+  image: {
+    src: ImageMetadata;
+    alt: LocalImageProps["alt"];
+    width?: LocalImageProps["width"];
+    height?: LocalImageProps["height"];
+    loading?: LocalImageProps["loading"];
+  };
+  colors: {
+    sectionBackground: "black" | "white";
+    textColor?: "black" | "white";
+  };
+}
+
+const {
+  title,
+  description,
+  colors,
+  layout = "image-right",
+  image,
+} = Astro.props;
+---
+
+<!-- TODO add clsx for classname mgmt -->
+<section
+  class={`grid grid-cols-[minmax(500px,880px)_1fr] ${colors.sectionBackground === "white" ? "bg-white text-black-950" : "bg-black-950 text-white"}`}
+>
+  <div class="max-w-4xl flex items-center py-44 px-28">
+    <div class="flex flex-col gap-5 max-w-[65%]">
+      <h2 class="uppercase text-3xl">{title}</h2>
+      <p
+        class={`text-xs ${colors.sectionBackground === "black" ? "text-white/60" : "text-black/60"}`}
+      >
+        {description}
+      </p>
+      <p>LINK</p>
+    </div>
+  </div>
+  <div>
+    <Image
+      class:list="w-full h-auto"
+      src={image.src}
+      alt={image.alt}
+      loading={image.loading || "lazy"}
+    />
+  </div>
+</section>
