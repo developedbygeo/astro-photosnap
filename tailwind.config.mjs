@@ -14,6 +14,15 @@ export default {
       },
     },
     extend: {
+      fontSize: {
+        "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
+        "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        "5xl": ["3rem", { lineHeight: "1" }],
+        "6xl": ["3.75rem", { lineHeight: "1" }],
+        "7xl": ["4.5rem", { lineHeight: "1.1" }],
+        "8xl": ["6rem", { lineHeight: "1.1" }],
+        "9xl": ["8rem", { lineHeight: "1.1" }],
+      },
       colors: {
         black: {
           50: "#f6f6f6",
@@ -94,8 +103,8 @@ export default {
         lg: [1, 1.6],
         xl: [2, 1.2],
         "2xl": [3, 1.2],
-        "3xl": [4, 1.2],
-        "4xl": [5, 1.1],
+        "3xl": [3.825, 1.195],
+        "4xl": [5, 1.25],
         "5xl": [6, 1.1],
         "6xl": [7, 1.1],
         "7xl": [8, 1],
