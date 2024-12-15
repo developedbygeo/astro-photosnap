@@ -6,7 +6,7 @@ import {
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from "@/components/react/sheet";
+} from "@/components/react/Sheet";
 import type { HEADER_NAVIGATION_LINKS } from "@/data/navigation";
 import { cn } from "@/lib/utils";
 
