@@ -24,6 +24,7 @@ export default {
         "9xl": ["8rem", { lineHeight: "1.1" }],
       },
       colors: {
+        currentColor: "currentColor",
         black: {
           50: "#f6f6f6",
           100: "#e7e7e7",
@@ -54,6 +55,8 @@ export default {
       backgroundImage: {
         "accent-gradient":
           "linear-gradient(to right, #FFC593, #BC7198, #5A77FF)",
+        "decoration-gradient":
+          "linear-gradient(to top, #FFC593, #BC7198, #5A77FF)",
       },
       backgroundSize: {
         "link-default": "100% 3px, 0 3px",
