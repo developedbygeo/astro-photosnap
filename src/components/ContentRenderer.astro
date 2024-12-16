@@ -1,0 +1,24 @@
+---
+import type { Maybe, Page_Pagecontent_Content } from "@/__generated__/graphql";
+import SplitSection from "@components/SplitSection.astro";
+
+interface Props {
+  content?: Maybe<Array<Maybe<Page_Pagecontent_Content>>>;
+}
+
+const { content = [] } = Astro.props;
+---
+
+{
+  content?.map((section, index) => {
+    if (!section) return null;
+
+    switch (section.__typename) {
+      case "Page_Pagecontent_Content_SplitSection":
+        return <SplitSection {...section} />;
+
+      default:
+        return <p>Unknown Section</p>;
+    }
+  })
+}
