@@ -1,74 +1,89 @@
 ---
-import type { ImageMetadata } from "astro";
+import arrowSVG from "@assets/svg/link-arrow.svg?raw";
+
 import { Image, type LocalImageProps } from "astro:assets";
 import { cn } from "@/lib/utils";
+import type { Page_Pagecontent_Content } from "@/__generated__/graphql";
 
-export interface Props {
-  title: string;
-  description: string;
-  layout: "image-left" | "image-right";
-  link: {
-    href: string;
-    title: string;
-  };
-  image: {
-    src: ImageMetadata;
-    alt: LocalImageProps["alt"];
-    width?: LocalImageProps["width"];
-    height?: LocalImageProps["height"];
-    loading?: LocalImageProps["loading"];
-  };
-  colors: {
-    sectionBackground: "black" | "white";
-    textColor?: "black" | "white";
-  };
+interface Props {
+  link?: Page_Pagecontent_Content["link"];
+  image?: Page_Pagecontent_Content["image"];
+  textSection?: Page_Pagecontent_Content["textSection"];
+  hasDecoration?: Page_Pagecontent_Content["hasDecoration"];
+  imagePosition?: Page_Pagecontent_Content["imagePosition"];
 }
 
-const {
-  title,
-  description,
-  colors,
-  link,
-  layout = "image-right",
-  image,
-} = Astro.props;
+const { link, image, textSection, hasDecoration, imagePosition } = Astro.props;
 
-const sectionBackground =
-  colors.sectionBackground === "white"
+const isLinkProvided = Boolean(link?.url && link?.title);
+
+/* conditional styling */
+const styledSectionBackground =
+  textSection?.background === "white"
     ? "bg-white text-black-950"
     : "bg-black-950 text-white";
+const styledDescriptionColor =
+  textSection?.background === "black" ? "text-white/60" : "text-black/60";
+const styledImagePosition =
+  imagePosition === "left" ? "md:order-1" : "md:order-2";
+const styledTextSectionPosition =
+  imagePosition === "left" ? "md:order-2" : "md:order-1";
+const styledSectionColumns =
+  imagePosition === "left"
+    ? "md:grid-cols-[0.5fr,1fr] lg:grid-cols-[1fr_minmax(500px,750px)]"
+    : "md:grid-cols-[1fr,0.5fr] lg:grid-cols-[minmax(500px,750px)_1fr]";
 
-const descriptionTextColor =
-  colors.sectionBackground === "black" ? "text-white/60" : "text-black/60";
-
-const imageStyle = `background-image: url(${image.src}); background-size: cover; background-position: center;`;
+const styledHasDecoration = hasDecoration
+  ? "relative after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:w-1.5 after:h-[100%] after:bg-decoration-gradient"
+  : "";
 ---
 
 <section
   class={cn(
-    "grid grid-rows-[0.75fr,1fr] md:grid-rows-1 md:grid-cols-[1fr,0.5fr] lg:grid-cols-[minmax(500px,750px)_1fr] max-h-[75dvh] overflow-hidden",
-    sectionBackground,
+    "grid grid-rows-[0.75fr,1fr] md:grid-rows-1 md:grid-cols-[1fr,0.5fr] items-center  max-h-[75dvh] overflow-hidden",
+    styledSectionBackground,
+    styledSectionColumns,
   )}
 >
-  <!-- Text Section -->
-  <div
-    class="order-2 md:order-1 max-w-4xl flex items-center md:py-44 md:px-28 h-full"
+  <article
+    class={cn(
+      "order-2 h-fit max-w-4xl flex items-center md:my-44",
+      styledTextSectionPosition,
+      styledHasDecoration,
+    )}
   >
-    <div class="flex flex-col gap-5 lg:max-w-[75%]">
-      <h2 class="uppercase text-4xl tracking-wide">{title}</h2>
-      <p class={cn("text-xs", descriptionTextColor)}>
-        {description}
-      </p>
-      <a href={link.href} class="text-blue-500 underline">{link.title}</a>
+    <div class="md:px-28">
+      <div class="flex flex-col gap-5">
+        <h2 class="uppercase text-4xl tracking-wide">{textSection?.title}</h2>
+        <p class={cn("text-xs loose-description", styledDescriptionColor)}>
+          {textSection?.text}
+        </p>
+      </div>
+      {
+        isLinkProvided && (
+          <a
+            href={link?.url}
+            class="uppercase group mt-12 flex items-center gap-4 underline-offset-2"
+            target={link?.target}
+          >
+            <span class="relative before:absolute before:bg-current before:left-0 before:-bottom-1 before:h-px before:w-0 before:transition-all before:duration-200 before:ease-in-out group-hover:before:w-full">
+              {link?.title}
+            </span>
+            <Fragment set:html={arrowSVG} />
+          </a>
+        )
+      }
     </div>
-  </div>
+  </article>
 
-  <!-- Image Section -->
-  <div
-    class="order-1 md:order-2 w-full h-auto md:h-full lg:max-h-[75dvh] bg-cover bg-center"
-    style={{ backgroundImage: `url(${image.src.src})` }}
-    role="img"
-    aria-label={image.alt}
-  >
-  </div>
+  <img
+    class={cn(
+      "order-1 relative w-full h-auto md:h-full lg:max-h-[75dvh] object-cover object-center",
+      styledImagePosition,
+    )}
+    title={image?.title}
+    src={image?.sourceUrl}
+    alt={image?.altText}
+    srcset={image?.srcSet}
+  />
 </section>
