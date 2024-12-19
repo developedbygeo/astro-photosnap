@@ -1,0 +1,41 @@
+---
+import type {
+  AcfLink,
+  Page_Pagecontent_Content_SplitSection,
+} from "@/__generated__/graphql";
+import { cn } from "@/lib/utils";
+import arrowSVG from "@assets/svg/link-arrow.svg?raw";
+
+interface Props {
+  link: Page_Pagecontent_Content_SplitSection["link"] | AcfLink;
+  anchorClassName?: string;
+  textClassName?: string;
+}
+
+const { link, anchorClassName, textClassName } = Astro.props;
+
+const isLinkProvided = Boolean(link?.url && link?.title);
+---
+
+{
+  isLinkProvided && (
+    <a
+      href={link?.url}
+      class={cn(
+        "uppercase group flex w-full items-center py-4 gap-4 underline-offset-2",
+        anchorClassName,
+      )}
+      target={link?.target}
+    >
+      <span
+        class={cn(
+          "relative font-bold before:absolute before:bg-current before:left-0 before:-bottom-1 before:h-px before:w-0 before:transition-all before:duration-200 before:ease-in-out group-hover:before:w-full",
+          textClassName,
+        )}
+      >
+        {link?.title}
+      </span>
+      <Fragment set:html={arrowSVG} />
+    </a>
+  )
+}
