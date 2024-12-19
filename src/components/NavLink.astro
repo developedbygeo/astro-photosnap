@@ -1,0 +1,21 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+  href: string;
+  className?: string;
+  activeClassName?: string;
+  title?: string;
+  isActive?: boolean;
+}
+
+const { href, title, isActive = false } = Astro.props;
+---
+
+<a
+  href={href}
+  title={title}
+  class={cn("text-xs navlink", isActive ? "navlink-active" : "")}
+>
+  <slot />
+</a>
