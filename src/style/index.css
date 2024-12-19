@@ -21,4 +21,8 @@
   .navlink-active {
     @apply before:w-full hover:!text-black-950 before:!h-[2px] before:bg-accent-gradient hover:before:!bg-accent-gradient;
   }
+
+  .loose-description {
+    @apply !leading-6;
+  }
 }
