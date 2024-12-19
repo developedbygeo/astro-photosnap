@@ -1,16 +1,15 @@
 ---
 import arrowSVG from "@assets/svg/link-arrow.svg?raw";
-
-import { Image, type LocalImageProps } from "astro:assets";
 import { cn } from "@/lib/utils";
-import type { Page_Pagecontent_Content } from "@/__generated__/graphql";
+import type { Page_Pagecontent_Content_SplitSection } from "@/__generated__/graphql";
+import StyledLink from "@/components/StyledLink.astro";
 
 interface Props {
-  link?: Page_Pagecontent_Content["link"];
-  image?: Page_Pagecontent_Content["image"];
-  textSection?: Page_Pagecontent_Content["textSection"];
-  hasDecoration?: Page_Pagecontent_Content["hasDecoration"];
-  imagePosition?: Page_Pagecontent_Content["imagePosition"];
+  link?: Page_Pagecontent_Content_SplitSection["link"];
+  image?: Page_Pagecontent_Content_SplitSection["image"];
+  textSection?: Page_Pagecontent_Content_SplitSection["textSection"];
+  hasDecoration?: Page_Pagecontent_Content_SplitSection["hasDecoration"];
+  imagePosition?: Page_Pagecontent_Content_SplitSection["imagePosition"];
 }
 
 const { link, image, textSection, hasDecoration, imagePosition } = Astro.props;
@@ -23,7 +22,7 @@ const styledSectionBackground =
     ? "bg-white text-black-950"
     : "bg-black-950 text-white";
 const styledDescriptionColor =
-  textSection?.background === "black" ? "text-white/60" : "text-black/60";
+  textSection?.background === "black" ? "text-white/60" : "text-black-950/60";
 const styledImagePosition =
   imagePosition === "left" ? "md:order-1" : "md:order-2";
 const styledTextSectionPosition =
@@ -59,20 +58,7 @@ const styledHasDecoration = hasDecoration
           {textSection?.text}
         </p>
       </div>
-      {
-        isLinkProvided && (
-          <a
-            href={link?.url}
-            class="uppercase group mt-12 flex items-center gap-4 underline-offset-2"
-            target={link?.target}
-          >
-            <span class="relative before:absolute before:bg-current before:left-0 before:-bottom-1 before:h-px before:w-0 before:transition-all before:duration-200 before:ease-in-out group-hover:before:w-full">
-              {link?.title}
-            </span>
-            <Fragment set:html={arrowSVG} />
-          </a>
-        )
-      }
+      <StyledLink link={link} anchorClassName="mt-12" />
     </div>
   </article>
 
@@ -81,7 +67,6 @@ const styledHasDecoration = hasDecoration
       "order-1 relative w-full h-auto md:h-full lg:max-h-[75dvh] object-cover object-center",
       styledImagePosition,
     )}
-    title={image?.title}
     src={image?.sourceUrl}
     alt={image?.altText}
     srcset={image?.srcSet}

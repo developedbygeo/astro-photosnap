@@ -1,5 +1,6 @@
 ---
 import type { Maybe, Page_Pagecontent_Content } from "@/__generated__/graphql";
+import FeaturedStories from "@/components/FeaturedStories.astro";
 import SplitSection from "@components/SplitSection.astro";
 
 interface Props {
@@ -17,6 +18,11 @@ const { content = [] } = Astro.props;
       case "Page_Pagecontent_Content_SplitSection":
         return <SplitSection {...section} />;
 
+      case "Page_Pagecontent_Content_FeaturedStories":
+        return <FeaturedStories stories={section} />;
+
+      case "Page_Pagecontent_Content_FeaturesSection":
+        return <p>Features Section</p>;
       default:
         return <p>Unknown Section</p>;
     }

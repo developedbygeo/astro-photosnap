@@ -1,0 +1,47 @@
+---
+import arrowSVG from "@assets/svg/link-arrow.svg?raw";
+import type { Page_Pagecontent_Content_FeaturedStories } from "@/__generated__/graphql";
+import { extractFeaturedStories } from "@/lib/cms";
+import StyledLink from "@/components/StyledLink.astro";
+import Separator from "@/components/Separator.astro";
+
+interface Props {
+  stories?: Page_Pagecontent_Content_FeaturedStories;
+}
+
+const { stories = {} } = Astro.props;
+
+const parsedStories = extractFeaturedStories(stories);
+---
+
+<section>
+  <ul class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2">
+    {
+      parsedStories.map((story, index) => {
+        if (!story) return null;
+        return (
+          <li>
+            <div class="relative group">
+              <img class="object-cover" {...story.image} />
+              <div class="absolute inset-0 h-full w-full overflow-hidden bg-black-950 opacity-40 group-hover:opacity-25 transition-opacity" />
+              <div class="absolute bottom-0 w-full text-white left-0 flex flex-col gap-1">
+                <article class="border-b lg:px-10 flex flex-col items-start w-full border-b-gray-200 py-4">
+                  <div class="w-full">
+                    <h3 class="text-lg font-bold">{story.title}</h3>
+                    <span class="text-xs">by {story.author}</span>
+                    <Separator className="my-4" />
+                  </div>
+                  <StyledLink
+                    link={story.link}
+                    anchorClassName="group mt-0"
+                    textClassName="group-hover:before:w-full"
+                  />
+                </article>
+              </div>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
