@@ -1,28 +1,20 @@
+@import "./components.css";
+@import "./utilities.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  h1 {
-    @apply text-4xl font-bold;
+  html {
+    @apply scrollbar-none;
   }
 
   body {
     @apply font-sans;
   }
-}
 
-@layer components {
-  .navlink {
-    @apply relative before:absolute uppercase font-bold before:left-0 before:-bottom-1 before:h-[2px] tracking-wide before:w-0 
-    before:transition-all before:duration-300 before:ease-in-out hover:text-black-950 hover:before:w-full hover:before:bg-black-950/30 hover:!text-black-950/30 hover:before:h-px;
-  }
-
-  .navlink-active {
-    @apply before:w-full hover:!text-black-950 before:!h-[2px] before:bg-accent-gradient hover:before:!bg-accent-gradient;
-  }
-
-  .loose-description {
-    @apply !leading-6;
+  h1 {
+    @apply text-4xl font-bold;
   }
 }

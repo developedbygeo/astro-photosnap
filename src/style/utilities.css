@@ -1,0 +1,31 @@
+@tailwind utilities;
+
+@layer utilities {
+  .base-background {
+    @apply bg-zinc-100;
+  }
+
+  .apply-pt {
+    @apply pt-4 sm:pt-20 lg:pt-12;
+  }
+
+  .apply-pb {
+    @apply pb-4 sm:pb-32 lg:pb-12;
+  }
+
+  .apply-py {
+    @apply py-4 sm:py-32 lg:py-12;
+  }
+
+  .apply-pb {
+    @apply pb-24 sm:pb-32 lg:pb-48;
+  }
+
+  .apply-pt {
+    @apply pt-24 sm:pt-32 lg:pt-48;
+  }
+
+  .apply-py {
+    @apply py-24 sm:py-32 lg:py-48;
+  }
+}
