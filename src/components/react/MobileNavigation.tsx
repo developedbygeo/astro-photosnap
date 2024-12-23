@@ -23,7 +23,7 @@ export const MobileNavigation = ({ links, activePath }: NavigationProps) => {
   return (
     <>
       <Sheet open={isOpen} onOpenChange={toggleIsOpen}>
-        <SheetTrigger asChild>
+        <SheetTrigger className="lg:hidden" asChild>
           <Button variant="ghost" size="icon">
             {isOpen ? (
               <X className={ICON_CLASS} />
