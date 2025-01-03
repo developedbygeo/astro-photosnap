@@ -1,5 +1,4 @@
 ---
-import arrowSVG from "@assets/svg/link-arrow.svg?raw";
 import { cn } from "@/lib/utils";
 import type { Page_Pagecontent_Content_SplitSection } from "@/__generated__/graphql";
 import StyledLink from "@/components/StyledLink.astro";
@@ -29,36 +28,36 @@ const styledTextSectionPosition =
   imagePosition === "left" ? "md:order-2" : "md:order-1";
 const styledSectionColumns =
   imagePosition === "left"
-    ? "md:grid-cols-[0.5fr,1fr] lg:grid-cols-[1fr_minmax(500px,750px)]"
+    ? "md:grid-cols-[0.5fr,1fr] lg:grid-cols-[1fr_minmax(500px,600px)]"
     : "md:grid-cols-[1fr,0.5fr] lg:grid-cols-[minmax(500px,750px)_1fr]";
 
 const styledHasDecoration = hasDecoration
-  ? "relative after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:w-1.5 after:h-[100%] after:bg-decoration-gradient"
+  ? "relative after:absolute after:top-0 after:h-1.5 after:w-40 after after:left-12 md:after:left-0 md:after:top-1/2 md:after:-translate-y-1/2 md:after:w-1.5 md:after:h-[100%] after:bg-mobile-accent-gradient md:after:bg-decoration-gradient"
   : "";
 ---
 
 <section
   class={cn(
-    "grid grid-rows-[0.75fr,1fr] md:grid-rows-1 md:grid-cols-[1fr,0.5fr] items-center  max-h-[75dvh] overflow-hidden",
+    "grid grid-rows-[0.75fr,1fr] md:grid-rows-1 md:grid-cols-[1fr,0.5fr] items-center md:max-h-[75dvh] overflow-hidden",
     styledSectionBackground,
     styledSectionColumns,
   )}
 >
   <article
     class={cn(
-      "order-2 h-fit max-w-4xl flex items-center md:my-44",
+      "order-2 h-fit max-w-4xl flex items-center py-16 md:my-44",
       styledTextSectionPosition,
       styledHasDecoration,
     )}
   >
-    <div class="md:px-28">
+    <div class="px-8 md:px-28">
       <div class="flex flex-col gap-5">
         <h2 class="uppercase text-4xl tracking-wide">{textSection?.title}</h2>
         <p class={cn("text-xs loose-description", styledDescriptionColor)}>
           {textSection?.text}
         </p>
       </div>
-      <StyledLink link={link} anchorClassName="mt-12" />
+      <StyledLink link={link} anchorClassName="mt-4 md:mt-12" />
     </div>
   </article>
 
