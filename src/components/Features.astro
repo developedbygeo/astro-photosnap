@@ -1,0 +1,40 @@
+---
+import type { Page_Pagecontent_Content_FeaturesSection } from "@/__generated__/graphql";
+import Separator from "@/components/Separator.astro";
+import { extractTopFeatures } from "@/lib/cms";
+
+interface Props {
+  features?: Page_Pagecontent_Content_FeaturesSection;
+}
+
+const { features = {} } = Astro.props;
+
+const parsedFeatures = extractTopFeatures(features);
+
+console.log(parsedFeatures);
+---
+
+<section>
+  <ul class="flex flex-col container apply-py lg:flex-row gap-20 lg:gap-4">
+    {
+      parsedFeatures.map((feature) => {
+        if (!feature) return null;
+        return (
+          <li class="flex-1 flex justify-center flex-col items-center gap-12">
+            <div class="relative flex items-center w-[4.5rem] h-[4.5rem]">
+              <img
+                class="object-contain"
+                {...feature.image}
+                src={feature?.image?.sourceUrl}
+              />
+            </div>
+            <article class="text-center space-y-2 max-w-md">
+              <h3 class="font-bold text-base">{feature.title}</h3>
+              <p>{feature.text}</p>
+            </article>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
