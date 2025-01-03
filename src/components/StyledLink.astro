@@ -35,7 +35,9 @@ const isLinkProvided = Boolean(link?.url && link?.title);
       >
         {link?.title}
       </span>
-      <Fragment set:html={arrowSVG} />
+      <div class="group-hover:scale-110 transition-transform duration-200 ease-in-out">
+        <Fragment set:html={arrowSVG} />
+      </div>
     </a>
   )
 }
