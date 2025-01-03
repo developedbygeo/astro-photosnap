@@ -11,6 +11,8 @@ export default {
       padding: "1rem",
       screens: {
         "2xl": "1400px",
+        "3xl": "1600px",
+        "4xl": "1800px",
       },
     },
     extend: {
@@ -57,6 +59,8 @@ export default {
           "linear-gradient(to right, #FFC593, #BC7198, #5A77FF)",
         "decoration-gradient":
           "linear-gradient(to top, #FFC593, #BC7198, #5A77FF)",
+        "mobile-accent-gradient":
+          "linear-gradient(to top right, #FFC593, #BC7198, #5A77FF)",
       },
       backgroundSize: {
         "link-default": "100% 3px, 0 3px",
@@ -87,6 +91,7 @@ export default {
     require("tailwindcss-animate"),
     require("@tailwindcss/typography"),
     require("@tailwindcss/container-queries"),
+    require("tailwind-scrollbar")({ nocompatible: true }),
     require("tailwindcss-fluid-type")({
       settings: {
         fontSizeMin: 1.125, // 1.125rem === 18px
