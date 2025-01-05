@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import logo from "@assets/svg/logo-white.svg";
+import StyledLink from "@/components/StyledLink.astro";
+
+import { NAVIGATION_LINKS_ENUM } from "@data/navigation";
+import type {
+  CustomMenu_Menulinkscontent_MenuLinks,
+  CustomMenu_Socialmediacontent_Content,
+  Maybe,
+} from "@/__generated__/graphql";
+import { splitLinksByCtaStyling } from "@/lib/cms";
+import SocialMediaLink from "@/components/SocialMediaLink.astro";
+import type { SOCIAL_MEDIA_PLATFORM_ENUM_VALUES } from "@/data/socialMedia";
+import Copyright from "@/components/Copyright.astro";
+
+interface Props {
+  links: Maybe<Array<Maybe<CustomMenu_Menulinkscontent_MenuLinks>>> | undefined;
+  socialMedia:
+    | Maybe<Array<Maybe<CustomMenu_Socialmediacontent_Content>>>
+    | undefined;
+}
+
+const { links = [], socialMedia = [] } = Astro.props;
+
+const { regularLinks, ctaStyledLinks } = splitLinksByCtaStyling(links);
+console.log(socialMedia);
+---
+
+<footer class="bg-black-950">
+  <div class="py-16 container flex justify-between">
+    <div class="flex items-center gap-x-28">
+      <div class="flex flex-col h-full justify-between">
+        <a href={NAVIGATION_LINKS_ENUM.HOME.href} class="text-white">
+          <Image src={logo} alt="logo" width="200" height="100" />
+        </a>
+        <ul class="flex gap-4" aria-label="Social media links">
+          {
+            socialMedia?.map((socialMediaLink) => {
+              const isValidLink = socialMediaLink?.platform;
+              if (!isValidLink) return null;
+              return (
+                <li>
+                  <SocialMediaLink
+                    platform={
+                      socialMediaLink.platform as
+                        | Maybe<SOCIAL_MEDIA_PLATFORM_ENUM_VALUES>
+                        | undefined
+                    }
+                    link={socialMediaLink.link}
+                  />
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+      <nav
+        class="flex justify-start items-center"
+        aria-label="Footer navigation"
+      >
+        <ul class="flex flex-row lg:flex-col items-start gap-7">
+          {
+            regularLinks?.map((link) => {
+              const isValidLink = link?.url;
+              if (!isValidLink) return null;
+              return (
+                <li>
+                  <a
+                    href={link.url}
+                    class="text-white tracking-wider uppercase"
+                  >
+                    {link.title}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+    </div>
+    <div class="flex justify-between items-end flex-col">
+      {
+        ctaStyledLinks?.map((link) => {
+          const isValidLink = link?.url;
+          if (!isValidLink) return null;
+          return (
+            <StyledLink
+              anchorClassName="hidden h-10 w-fit uppercase md:flex items-center tracking-wide justify-center py-3 px-6 bg-black-950 text-white"
+              link={{
+                url: link.url,
+                title: link.title,
+              }}
+            />
+          );
+        })
+      }
+      <Copyright class:list="text-xs" />
+    </div>
+  </div>
+</footer>
