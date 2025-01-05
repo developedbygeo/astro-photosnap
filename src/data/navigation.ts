@@ -20,10 +20,3 @@ export const NAVIGATION_LINKS_ENUM = {
     href: "/get-invitation",
   },
 } as const;
-
-export const HEADER_NAVIGATION_LINKS = [
-  { ...NAVIGATION_LINKS_ENUM.HOME },
-  { ...NAVIGATION_LINKS_ENUM.STORIES },
-  { ...NAVIGATION_LINKS_ENUM.FEATURES },
-  { ...NAVIGATION_LINKS_ENUM.PRICING },
-];
