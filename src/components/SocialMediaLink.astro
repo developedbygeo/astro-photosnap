@@ -1,0 +1,74 @@
+---
+import type { AcfLink, Maybe } from "@/__generated__/graphql";
+
+// standard versions
+import facebookStandardSVG from "@assets/svg/social-media/standard/facebook.svg?raw";
+import instagramStandardSVG from "@assets/svg/social-media/standard/instagram.svg?raw";
+import pinterestStandardSVG from "@assets/svg/social-media/standard/pinterest.svg?raw";
+import twitterStandardSVG from "@assets/svg/social-media/standard/twitter.svg?raw";
+import youtubeSStandardSVG from "@assets/svg/social-media/standard/youtube.svg?raw";
+
+// hover versions
+import facebookHoverSVG from "@assets/svg/social-media/hover/facebook.svg?raw";
+import instagramHoverSVG from "@assets/svg/social-media/hover/instagram.svg?raw";
+import pinterestHoverSVG from "@assets/svg/social-media/hover/pinterest.svg?raw";
+import twitterHoverSVG from "@assets/svg/social-media/hover/twitter.svg?raw";
+import youtubeHoverSVG from "@assets/svg/social-media/hover/youtube.svg?raw";
+import type {
+  SOCIAL_MEDIA_ICON_LOOKUP,
+  SOCIAL_MEDIA_PLATFORM_ENUM_VALUES,
+} from "@/data/socialMedia";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  platform: Maybe<SOCIAL_MEDIA_PLATFORM_ENUM_VALUES> | undefined;
+  link: Maybe<AcfLink> | undefined;
+}
+
+const { platform, link } = Astro.props;
+
+const SOCIAL_MEDIA_SVG_LOOKUP: SOCIAL_MEDIA_ICON_LOOKUP = {
+  facebook: {
+    standard: facebookStandardSVG,
+    hover: facebookHoverSVG,
+  },
+  instagram: {
+    standard: instagramStandardSVG,
+    hover: instagramHoverSVG,
+  },
+  pinterest: {
+    standard: pinterestStandardSVG,
+    hover: pinterestHoverSVG,
+  },
+  twitter: {
+    standard: twitterStandardSVG,
+    hover: twitterHoverSVG,
+  },
+  youtube: {
+    standard: youtubeSStandardSVG,
+    hover: youtubeHoverSVG,
+  },
+} as const;
+
+if (!platform || !link) return null;
+---
+
+<a
+  href={link?.url}
+  class="text-white relative group"
+  title={link.title}
+  target={link.target}
+>
+  <Fragment
+    class:list="fill-current group-hover:opacity-0"
+    set:html={SOCIAL_MEDIA_SVG_LOOKUP[platform].standard}
+  />
+  <div
+    class="absolute inset-0 group-hover:opacity-100 opacity-0 transition-opacity duration-200"
+  >
+    <Fragment
+      class:list="fill-current"
+      set:html={SOCIAL_MEDIA_SVG_LOOKUP[platform].hover}
+    />
+  </div>
+</a>
