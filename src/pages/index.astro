@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import client from "@/lib/apollo";
+import gql from "graphql-tag";
+import { GET_PAGE_CONTENT_QUERY } from "@/data/queries/getPageContent";
+
+import type { SpecificPageQueryResponse } from "@/types/graphql/pageQuery";
+import ContentRenderer from "@/components/ContentRenderer.astro";
+import { PAGE_ID_ENUM } from "@/data/pages";
+import { GET_ALL_MENUS_CONTENT_QUERY } from "@/data/queries/getAllMenus";
+import type { MenuQueryResponse } from "@/types/graphql/menuQuery";
+import { WP_COMPONENT_IDS } from "@/data/misc";
+import { extractMenuById } from "@/lib/cms";
+
+const homepageQuery = GET_PAGE_CONTENT_QUERY(PAGE_ID_ENUM.HOMEPAGE);
+const { data: incomingHomepageData } =
+  await client.query<SpecificPageQueryResponse>({
+    query: gql`
+      ${homepageQuery}
+    `,
+  });
+
+const { data: incomingMenuData } = await client.query<MenuQueryResponse>({
+  query: gql`
+    ${GET_ALL_MENUS_CONTENT_QUERY}
+  `,
+});
+
+const pageData = incomingHomepageData.page?.pageContent?.content;
+const allMenuData = incomingMenuData.customMenus?.nodes;
+
+const headerMenu = extractMenuById(
+  allMenuData,
+  WP_COMPONENT_IDS.HEADER_NAVIGATION,
+);
+const footerMenu = extractMenuById(
+  allMenuData,
+  WP_COMPONENT_IDS.FOOTER_NAVIGATION,
+);
 ---
 
 <Layout>
-	<Welcome />
+  <Header links={headerMenu?.menuLinksContent?.menuLinks} />
+  <main>
+    <ContentRenderer content={pageData} />
+  </main>
+  <Footer
+    links={footerMenu?.menuLinksContent?.menuLinks}
+    socialMedia={footerMenu?.socialMediaContent?.content}
+  />
 </Layout>
